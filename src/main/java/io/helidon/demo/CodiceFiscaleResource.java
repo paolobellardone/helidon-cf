@@ -7,11 +7,13 @@ import java.util.HashMap;
 import java.util.Collections;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Scanner;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.json.JsonArray;
 import javax.json.JsonReader;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -27,12 +29,12 @@ public class CodiceFiscaleResource {
   /**
    * Initialize the town codes from json file
    */
-  private static JsonObject townCodes = Json.createObjectBuilder().build();
+  private static JsonArray townCodes = Json.createArrayBuilder().build();
   static {
     try {
       // Read the json file directly from jar archive
-      JsonReader reader = Json.createReader(  Main.class.getResourceAsStream("/comuni.json"));
-      JsonObject jsonData = reader.readObject();
+      JsonReader reader = Json.createReader(Main.class.getResourceAsStream("/comuni.json"));
+      JsonArray jsonData = reader.readArray();
       reader.close();
       townCodes = jsonData;
     }
@@ -77,12 +79,11 @@ public class CodiceFiscaleResource {
     controlCharEven = Collections.unmodifiableMap(_map);
   };
 
-  private static Object getKeyFromValue(JsonObject hashMap, String value) {
-    for (String o : hashMap.keySet()) {
-      String _value = hashMap.getString(o);
-      _value = _value.substring(0,_value.length()-5);
-      if (_value.equals(value)) {
-        return o;
+  private static Object getKeyFromValue(JsonArray array, String value) {
+    for (int i = 0; i < array.size(); i++) {
+      String name = array.getJsonObject(i).getString("nome");
+      if (name.equals(value)) {
+        return array.getJsonObject(i).getString("codiceCatastale");
       }
     }
     return null;
@@ -167,7 +168,15 @@ public class CodiceFiscaleResource {
   private String evalTownCode(String town)
   {
     //Inserire eventualmente gestione accenti
-    return getKeyFromValue(townCodes, town.toUpperCase()).toString();
+    String capitalizedTown = "";
+    Scanner scanTown = new Scanner(town);
+    while (scanTown.hasNext()) {
+      String word = scanTown.next(); 
+      capitalizedTown += Character.toUpperCase(word.charAt(0)) + word.substring(1) + " "; 
+    }
+    scanTown.close();
+    capitalizedTown = capitalizedTown.trim();
+    return getKeyFromValue(townCodes, capitalizedTown).toString();
   }
 
   private String evalTaxCode(String name, String surname, char gender, int day, int month, int year, String town)
