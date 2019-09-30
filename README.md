@@ -33,11 +33,11 @@ mvn package
 java -jar target/codicefiscale.jar
 ```
 
-## Exercise the application
+## Test the application
 
 ```
 curl -H "Content-Type: application/json" -X POST -d "{ \"name\": \"Mario\", \"surname\": \"Rossi\", \"gender\": \"M\", \"day\": \"01\", \"month\": \"01\", \"year\": \"1970\", \"town\": \"Roma\" }" http://localhost:8080/evalcf
-{"taxCode":"MRARSS70A01H501S"}
+{"taxCode":"RSSMRA70A01H501S"}
 ```
 
 ## Build the Docker Image
