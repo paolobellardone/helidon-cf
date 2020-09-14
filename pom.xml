@@ -8,18 +8,18 @@
     <parent>
         <groupId>io.helidon.applications</groupId>
         <artifactId>helidon-mp</artifactId>
-        <version>1.4.4</version>
+        <version>2.0.2</version>
         <relativePath/>
     </parent>
 
     <groupId>io.helidon.demo</groupId>
     <artifactId>codicefiscale</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
     <name>${project.artifactId}</name>
 
     <properties>
-        <helidon.version>1.4.4</helidon.version>
+        <helidon.version>2.0.2</helidon.version>
         <package>io.helidon.demo.codicefiscale</package>
         <mainClass>io.helidon.demo.Main</mainClass>
         <maven.compiler.source>11</maven.compiler.source>
@@ -71,9 +71,9 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>javax.activation</groupId>
-            <artifactId>javax.activation-api</artifactId>
-            <scope>runtime</scope>
+            <groupId>jakarta.activation</groupId>
+            <artifactId>jakarta.activation-api</artifactId>
+            <version>1.2.2</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
